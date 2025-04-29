@@ -8,13 +8,18 @@ const Embed = () => {
   const { data: podcasts, isLoading, error } = useQuery<Podcast[]>({
     queryKey: ['embedded-podcasts'],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('podcasts')
-        .select('*')
-        .order('created_at', { ascending: false });
+      try {
+        const { data, error } = await supabase
+          .from('podcasts')
+          .select('*')
+          .order('created_at', { ascending: false });
 
-      if (error) throw error;
-      return data;
+        if (error) throw error;
+        return data || [];
+      } catch (err) {
+        console.error('Error fetching podcasts for embed:', err);
+        return [];
+      }
     }
   });
 
@@ -25,7 +30,9 @@ const Embed = () => {
           .winpod-embed {
             font-family: system-ui, -apple-system, sans-serif;
             max-width: 100%;
-            margin: 0 auto;
+            margin: 0;
+            padding: 0;
+            background-color: transparent;
           }
           .winpod-embed * {
             box-sizing: border-box;
@@ -34,7 +41,7 @@ const Embed = () => {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 1.5rem;
-            padding: 1rem;
+            padding: 0.5rem;
           }
           .winpod-embed .bg-kit-green {
             background-color: #10B981;
@@ -60,13 +67,13 @@ const Embed = () => {
       </style>
 
       {isLoading && (
-        <div className="text-center py-8">
+        <div className="text-center py-4">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-kit-green mx-auto"></div>
         </div>
       )}
 
       {error && (
-        <div className="text-center py-8 text-red-600">
+        <div className="text-center py-4 text-red-600">
           Failed to load podcasts
         </div>
       )}
