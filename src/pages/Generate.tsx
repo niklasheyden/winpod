@@ -361,17 +361,30 @@ Format: Single paragraph, detailed description`
               ${pdfText}
               
               Guidelines for the script:
-              1. Start with a warm welcome: "Welcome to a new episode of Winpod!"
-              2. Introduce the paper and authors in a conversational way
-              3. Explain the research area in accessible language
-              4. Present the research in a flowing narrative without section headers
+              1. Start with a professional welcome: "Welcome to a new episode of Orpheus!"
+              2. Introduce the paper and authors in a clear, objective manner:
+                 - If there is only one author, name the author 
+                 - If there are exactly two authors, name both authors
+                 - If there are more than two authors, name only the lead author (first author) and refer to others as "colleagues" or "co-authors"
+                 - Do not list all authors by name
+              3. Explain the research area using precise, accessible language
+              4. Present the research findings in a flowing narrative without section headers
               5. Use natural transitions between topics
               6. Explain any technical terms or abbreviations the first time they appear
               7. Never read abbreviations in parentheses - use the full terms
-              8. End with a thoughtful conclusion that summarizes key points
-              9. Close with an engaging remark about the research's impact
+              8. End with a balanced conclusion that summarizes key findings
+              9. Close with a measured assessment of the research's implications
               
-              Remember: The script should be between 6000-7000 characters total for a 5-7 minute podcast. Make it sound like a real podcast host speaking naturally, not reading from an academic paper.`
+              Remember: 
+              - The script should be between 6000-7000 characters total for a 5-7 minute podcast
+              - Make it sound like a professional host speaking naturally, not reading from an academic paper
+              - Avoid sensational language, intense adjectives, or hyperbolic claims
+              - Never use words like 'groundbreaking', 'exceptional', 'intriguing', 'revolutionary', 'amazing', 'incredible', 'remarkable', 'outstanding', 'brilliant', or similar hyperbolic terms
+              - Present findings in a balanced, evidence-based manner
+              - Focus on clarity and objectivity rather than dramatic impact
+              - Use precise, measured language to describe research outcomes
+              - If you need to emphasize importance, use specific data or evidence rather than intense adjectives
+              - Only name the lead author and refer to others as colleagues`
           }
         ]
       });
