@@ -361,7 +361,7 @@ Format: Single paragraph, detailed description`
               ${pdfText}
               
               Guidelines for the script:
-              1. Start with a professional welcome: "Welcome to a new episode of Orpheus!"
+              1. Start with a professional welcome: "Welcome to a new episode of Winpod!"
               2. Introduce the paper and authors in a clear, objective manner:
                  - If there is only one author, name the author 
                  - If there are exactly two authors, name both authors
