@@ -1,19 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Search } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useQuery } from '@tanstack/react-query';
 import type { Podcast } from '../lib/types';
 import EmbeddedPodcastCard from '../components/EmbeddedPodcastCard';
 
 const Embed = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedGroup, setSelectedGroup] = useState<string | null>(null);
+
   const { data: podcasts, isLoading, error } = useQuery<Podcast[]>({
-    queryKey: ['embedded-podcasts'],
+    queryKey: ['embedded-podcasts', searchTerm, selectedGroup],
     queryFn: async () => {
       try {
-        const { data, error } = await supabase
+        let query = supabase
           .from('podcasts')
           .select('*')
           .order('created_at', { ascending: false });
 
+        if (searchTerm) {
+          query = query.or(`title.ilike.%${searchTerm}%,abstract.ilike.%${searchTerm}%,authors.ilike.%${searchTerm}%`);
+        }
+
+        // Only filter for h-lab, as WIN includes all papers
+        if (selectedGroup === 'h-lab') {
+          query = query.eq('research_group', 'h-lab');
+        }
+
+        const { data, error } = await query;
         if (error) throw error;
         return data || [];
       } catch (err) {
@@ -37,6 +51,56 @@ const Embed = () => {
           .winpod-embed * {
             box-sizing: border-box;
           }
+          .winpod-embed .search-container {
+            padding: 0.5rem;
+            margin-bottom: 0.5rem;
+          }
+          .winpod-embed .search-input {
+            width: 100%;
+            padding: 0.5rem 0.75rem 0.5rem 2rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            outline: none;
+            transition: border-color 0.15s ease-in-out;
+          }
+          .winpod-embed .search-input:focus {
+            border-color: #10B981;
+            box-shadow: 0 0 0 1px #10B981;
+          }
+          .winpod-embed .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9CA3AF;
+            width: 1rem;
+            height: 1rem;
+          }
+          .winpod-embed .filter-container {
+            display: flex;
+            gap: 0.5rem;
+            padding: 0 0.5rem 0.5rem;
+          }
+          .winpod-embed .filter-button {
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease-in-out;
+          }
+          .winpod-embed .filter-button.active {
+            background-color: #10B981;
+            color: white;
+          }
+          .winpod-embed .filter-button:not(.active) {
+            background-color: #ECFDF5;
+            color: #059669;
+          }
+          .winpod-embed .filter-button:not(.active):hover {
+            background-color: #D1FAE5;
+          }
           .winpod-embed .grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -58,6 +122,12 @@ const Embed = () => {
           .winpod-embed .hover\\:bg-kit-green-50:hover {
             background-color: #D1FAE5;
           }
+          .winpod-embed .empty-state {
+            text-align: center;
+            padding: 1rem;
+            color: #6B7280;
+            font-size: 0.875rem;
+          }
           @media (max-width: 640px) {
             .winpod-embed .grid {
               grid-template-columns: 1fr;
@@ -65,6 +135,35 @@ const Embed = () => {
           }
         `}
       </style>
+
+      {/* Search and Filter Section */}
+      <div className="search-container">
+        <div className="relative">
+          <Search className="search-icon" />
+          <input
+            type="text"
+            placeholder="Search podcasts..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="search-input"
+          />
+        </div>
+      </div>
+
+      <div className="filter-container">
+        <button
+          onClick={() => setSelectedGroup(selectedGroup === 'WIN' ? null : 'WIN')}
+          className={`filter-button ${selectedGroup === 'WIN' ? 'active' : ''}`}
+        >
+          WIN Papers
+        </button>
+        <button
+          onClick={() => setSelectedGroup(selectedGroup === 'h-lab' ? null : 'h-lab')}
+          className={`filter-button ${selectedGroup === 'h-lab' ? 'active' : ''}`}
+        >
+          h-lab Papers
+        </button>
+      </div>
 
       {isLoading && (
         <div className="text-center py-4">
@@ -78,7 +177,13 @@ const Embed = () => {
         </div>
       )}
 
-      {!isLoading && !error && podcasts && (
+      {!isLoading && !error && (!podcasts || podcasts.length === 0) && (
+        <div className="empty-state">
+          No podcasts found. Try adjusting your search or filters.
+        </div>
+      )}
+
+      {!isLoading && !error && podcasts && podcasts.length > 0 && (
         <div className="grid">
           {podcasts.map((podcast) => (
             <EmbeddedPodcastCard key={podcast.id} podcast={podcast} />
