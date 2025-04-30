@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Search } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useQuery } from '@tanstack/react-query';
@@ -8,6 +8,15 @@ import EmbeddedPodcastCard from '../components/EmbeddedPodcastCard';
 const Embed = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedGroup, setSelectedGroup] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Read the group parameter from the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const group = urlParams.get('group');
+    if (group === 'h-lab') {
+      setSelectedGroup('h-lab');
+    }
+  }, []);
 
   const { data: podcasts, isLoading, error } = useQuery<Podcast[]>({
     queryKey: ['embedded-podcasts', searchTerm, selectedGroup],
