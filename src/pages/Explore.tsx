@@ -21,9 +21,9 @@ const Explore = () => {
         query = query.or(`title.ilike.%${searchTerm}%,abstract.ilike.%${searchTerm}%,authors.ilike.%${searchTerm}%`);
       }
 
-      // Only filter for h-lab, as WIN includes all papers
-      if (selectedGroup === 'h-lab') {
-        query = query.eq('research_group', 'h-lab');
+      // Filter by selected research group
+      if (selectedGroup) {
+        query = query.eq('research_group', selectedGroup);
       }
 
       const { data, error } = await query;
@@ -49,16 +49,6 @@ const Explore = () => {
           </div>
           <div className="flex gap-2">
             <button
-              onClick={() => setSelectedGroup(selectedGroup === 'WIN' ? null : 'WIN')}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                selectedGroup === 'WIN'
-                  ? 'bg-kit-green text-white'
-                  : 'bg-kit-green-50 text-kit-green-700 hover:bg-kit-green-100'
-              }`}
-            >
-              WIN Papers
-            </button>
-            <button
               onClick={() => setSelectedGroup(selectedGroup === 'h-lab' ? null : 'h-lab')}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                 selectedGroup === 'h-lab'
@@ -67,6 +57,36 @@ const Explore = () => {
               }`}
             >
               h-lab Papers
+            </button>
+            <button
+              onClick={() => setSelectedGroup(selectedGroup === 'IM' ? null : 'IM')}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                selectedGroup === 'IM'
+                  ? 'bg-kit-green text-white'
+                  : 'bg-kit-green-50 text-kit-green-700 hover:bg-kit-green-100'
+              }`}
+            >
+              IM Papers
+            </button>
+            <button
+              onClick={() => setSelectedGroup(selectedGroup === 'WI-III' ? null : 'WI-III')}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                selectedGroup === 'WI-III'
+                  ? 'bg-kit-green text-white'
+                  : 'bg-kit-green-50 text-kit-green-700 hover:bg-kit-green-100'
+              }`}
+            >
+              WI-III Papers
+            </button>
+            <button
+              onClick={() => setSelectedGroup(selectedGroup === 'DSI' ? null : 'DSI')}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                selectedGroup === 'DSI'
+                  ? 'bg-kit-green text-white'
+                  : 'bg-kit-green-50 text-kit-green-700 hover:bg-kit-green-100'
+              }`}
+            >
+              DSI Papers
             </button>
           </div>
         </div>

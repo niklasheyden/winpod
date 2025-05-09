@@ -33,9 +33,9 @@ const Home = () => {
         query = query.or(`title.ilike.%${searchTerm}%,abstract.ilike.%${searchTerm}%,authors.ilike.%${searchTerm}%`);
       }
 
-      // Only filter for h-lab, as WIN includes all papers
-      if (selectedGroup === 'h-lab') {
-        query = query.eq('research_group', 'h-lab');
+      // Filter by selected research group
+      if (selectedGroup) {
+        query = query.eq('research_group', selectedGroup);
       }
 
       const { data, error } = await query;
@@ -145,20 +145,36 @@ const Home = () => {
             </div>
             <div className="flex gap-2">
               <button
-                onClick={() => setSelectedGroup(selectedGroup === 'WIN' ? null : 'WIN')}
-                className={`btn-secondary ${
-                  selectedGroup === 'WIN' && 'bg-kit-green text-white hover:bg-kit-green-600'
-                }`}
-              >
-                WIN Papers
-              </button>
-              <button
                 onClick={() => setSelectedGroup(selectedGroup === 'h-lab' ? null : 'h-lab')}
                 className={`btn-secondary ${
                   selectedGroup === 'h-lab' && 'bg-kit-green text-white hover:bg-kit-green-600'
                 }`}
               >
                 h-lab Papers
+              </button>
+              <button
+                onClick={() => setSelectedGroup(selectedGroup === 'IM' ? null : 'IM')}
+                className={`btn-secondary ${
+                  selectedGroup === 'IM' && 'bg-kit-green text-white hover:bg-kit-green-600'
+                }`}
+              >
+                IM Papers
+              </button>
+              <button
+                onClick={() => setSelectedGroup(selectedGroup === 'WI-III' ? null : 'WI-III')}
+                className={`btn-secondary ${
+                  selectedGroup === 'WI-III' && 'bg-kit-green text-white hover:bg-kit-green-600'
+                }`}
+              >
+                WI-III Papers
+              </button>
+              <button
+                onClick={() => setSelectedGroup(selectedGroup === 'DSI' ? null : 'DSI')}
+                className={`btn-secondary ${
+                  selectedGroup === 'DSI' && 'bg-kit-green text-white hover:bg-kit-green-600'
+                }`}
+              >
+                DSI Papers
               </button>
             </div>
           </div>

@@ -31,9 +31,9 @@ const Embed = () => {
           query = query.or(`title.ilike.%${searchTerm}%,abstract.ilike.%${searchTerm}%,authors.ilike.%${searchTerm}%`);
         }
 
-        // Only filter for h-lab, as WIN includes all papers
-        if (selectedGroup === 'h-lab') {
-          query = query.eq('research_group', 'h-lab');
+        // Filter by selected research group
+        if (selectedGroup) {
+          query = query.eq('research_group', selectedGroup);
         }
 
         const { data, error } = await query;
@@ -161,16 +161,28 @@ const Embed = () => {
 
       <div className="filter-container">
         <button
-          onClick={() => setSelectedGroup(selectedGroup === 'WIN' ? null : 'WIN')}
-          className={`filter-button ${selectedGroup === 'WIN' ? 'active' : ''}`}
-        >
-          WIN Papers
-        </button>
-        <button
           onClick={() => setSelectedGroup(selectedGroup === 'h-lab' ? null : 'h-lab')}
           className={`filter-button ${selectedGroup === 'h-lab' ? 'active' : ''}`}
         >
           h-lab Papers
+        </button>
+        <button
+          onClick={() => setSelectedGroup(selectedGroup === 'IM' ? null : 'IM')}
+          className={`filter-button ${selectedGroup === 'IM' ? 'active' : ''}`}
+        >
+          IM Papers
+        </button>
+        <button
+          onClick={() => setSelectedGroup(selectedGroup === 'WI-III' ? null : 'WI-III')}
+          className={`filter-button ${selectedGroup === 'WI-III' ? 'active' : ''}`}
+        >
+          WI-III Papers
+        </button>
+        <button
+          onClick={() => setSelectedGroup(selectedGroup === 'DSI' ? null : 'DSI')}
+          className={`filter-button ${selectedGroup === 'DSI' ? 'active' : ''}`}
+        >
+          DSI Papers
         </button>
       </div>
 

@@ -621,8 +621,11 @@ Format: Single paragraph, detailed description`
                 required
               >
                 <option value="">Select a group</option>
-                <option value="WIN">WIN</option>
+                {/* <option value="WIN">WIN</option> */}
                 <option value="h-lab">h-lab</option>
+                <option value="IM">IM</option>
+                <option value="WI-III">WI-III</option>
+                <option value="DSI">DSI</option>
               </select>
             </div>
 
